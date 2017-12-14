@@ -228,6 +228,8 @@ _STYLE_HELP = dict(
       operators."""),
     USE_TABS=textwrap.dedent("""\
       Use the Tab character for indentation."""),
+    TAB_WIDTH=textwrap.dedent("""\
+      The Tab width."""),
     # BASED_ON_STYLE='Which predefined style this style is based on',
 )
 
@@ -273,6 +275,7 @@ def CreatePEP8Style():
       SPLIT_PENALTY_IMPORT_NAMES=0,
       SPLIT_PENALTY_LOGICAL_OPERATOR=300,
       USE_TABS=False,
+      TAB_WIDTH=4,
   )
 
 
@@ -402,6 +405,7 @@ _STYLE_OPTION_VALUE_CONVERTER = dict(
     SPLIT_PENALTY_IMPORT_NAMES=int,
     SPLIT_PENALTY_LOGICAL_OPERATOR=int,
     USE_TABS=_BoolConverter,
+    TAB_WIDTH=int,
 )
 
 

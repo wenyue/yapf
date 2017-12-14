@@ -122,11 +122,14 @@ class FormatToken(object):
       spaces: (int) The number of spaces to place before the token.
       indent_level: (int) The indentation level.
     """
-    indent_char = '\t' if style.Get('USE_TABS') else ' '
-    token_indent_char = indent_char if newlines_before > 0 else ' '
-    indent_before = (
-        indent_char * indent_level * style.Get('INDENT_WIDTH') +
-        token_indent_char * spaces)
+    total_spaces = indent_level * style.Get('INDENT_WIDTH') + spaces
+    if style.Get('USE_TABS'):
+        tab_width = style.Get('TAB_WIDTH')
+        indent_before = (
+            '\t' * (total_spaces / tab_width) +
+            ' ' * (total_spaces % tab_width))
+    else:
+        indent_before = (' ' * total_spaces)
 
     if self.is_comment:
       comment_lines = [s.lstrip() for s in self.value.splitlines()]
