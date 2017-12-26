@@ -100,6 +100,13 @@ def FormatFile(filename,
   return reformatted_source, encoding, changed
 
 
+def ReplaceHeadTabs(unformatted_source):
+  tab_width = style.Get('TAB_WIDTH')
+  def Replace(match):
+    tabs_num = len(match.group()) - 1
+    return '\n' + ' ' * tab_width * tabs_num
+  return re.sub('\n\t+', Replace, unformatted_source)
+
 def FormatCode(unformatted_source,
                filename='<unknown>',
                style_config=None,
@@ -123,6 +130,8 @@ def FormatCode(unformatted_source,
   style.SetGlobalStyle(style.CreateStyleFromConfig(style_config))
   if not unformatted_source.endswith('\n'):
     unformatted_source += '\n'
+  if style.Get('USE_TABS'):
+	  unformatted_source = ReplaceHeadTabs(unformatted_source)
 
   try:
     tree = pytree_utils.ParseCodeToTree(unformatted_source)
@@ -144,6 +153,7 @@ def FormatCode(unformatted_source,
   _MarkLinesToFormat(uwlines, lines)
   reformatted_source = reformatter.Reformat(
       _SplitSemicolons(uwlines), verify, lines)
+  print(reformatted_source)
 
   if unformatted_source == reformatted_source:
     return '' if print_diff else reformatted_source, False
