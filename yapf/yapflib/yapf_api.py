@@ -100,6 +100,15 @@ def FormatFile(filename,
   return reformatted_source, encoding, changed
 
 
+def _RecalTokenColumn(uwlines, unformatted_source):
+  lines = unformatted_source.splitlines()
+  for uwline in uwlines:
+    for tok in uwline.tokens:
+      line = lines[tok.lineno - 1]
+      tabs_before = len(re.search('^\t*', line).group())
+      tok.column += style.Get('TAB_WIDTH') * tabs_before - tabs_before
+
+
 def FormatCode(unformatted_source,
                filename='<unknown>',
                style_config=None,
@@ -137,6 +146,7 @@ def FormatCode(unformatted_source,
   blank_line_calculator.CalculateBlankLines(tree)
 
   uwlines = pytree_unwrapper.UnwrapPyTree(tree)
+  _RecalTokenColumn(uwlines, unformatted_source)
   for uwl in uwlines:
     uwl.CalculateFormattingInformation()
 

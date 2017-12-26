@@ -93,6 +93,7 @@ class FormatToken(object):
       node: (pytree.Leaf) The node that's being wrapped.
     """
     self.node = node
+    self.column = self.node.column
     self.next_token = None
     self.previous_token = None
     self.matching_bracket = None
@@ -216,11 +217,6 @@ class FormatToken(object):
     """Return true if the token requires a split before it."""
     return pytree_utils.GetNodeAnnotation(self.node,
                                           pytree_utils.Annotation.MUST_SPLIT)
-
-  @property
-  def column(self):
-    """The original column number of the node in the source."""
-    return self.node.column
 
   @property
   def lineno(self):
