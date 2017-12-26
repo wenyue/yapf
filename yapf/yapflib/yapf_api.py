@@ -153,7 +153,6 @@ def FormatCode(unformatted_source,
   _MarkLinesToFormat(uwlines, lines)
   reformatted_source = reformatter.Reformat(
       _SplitSemicolons(uwlines), verify, lines)
-  print(reformatted_source)
 
   if unformatted_source == reformatted_source:
     return '' if print_diff else reformatted_source, False
